@@ -13,7 +13,8 @@ const postgresDataSourceOptions: TypeOrmModuleOptions = {
     password: process.env.PG_DB_PASSWORD,
     database: process.env.PG_DB_DATABASE,
     entities: ['dist/**/*.entity{.ts,.js}'],
-    migrations: [],
+    migrations: ['dist/db/migrations/**/*{.ts,.js}'],
+    migrationsTableName: '_typeorm_migrations',
     logging: process.env.PG_DB_LOGGING === 'true',  
     synchronize: process.env.PG_DB_SYNCHRONIZE === 'true', 
   };
