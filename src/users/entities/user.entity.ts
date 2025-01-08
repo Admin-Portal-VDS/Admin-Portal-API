@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { UserRoles } from "../enums/user-roles.enum";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { RoleEntity } from "src/roles/entities/role.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -8,21 +8,21 @@ export class UserEntity {
 id: number
 
 @Column()
-name: string
+first_name: string // "John"
 
 @Column()
-username: string
+last_name: string // "Doe"
 
 @Column()
-phone_no: number
+login_name: string // "johndoe"
 
 @Column()
-email: string
+email: string // "john.doe@vonage.com"
 
-
-@Column({type: "enum",enum:UserRoles,array:true,default:[UserRoles.USER]})
-roles: UserRoles[]
+@ManyToOne(()=>RoleEntity)
+role: RoleEntity
 
 @CreateDateColumn()
 created_at: Date
 }
+
