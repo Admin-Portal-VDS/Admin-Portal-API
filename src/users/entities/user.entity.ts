@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoleEntity } from "src/roles/entities/role.entity";
+import { GroupEntity } from "src/groups/entities/group.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -21,6 +22,10 @@ email: string // "john.doe@vonage.com"
 
 @ManyToOne(()=>RoleEntity)
 role: RoleEntity
+
+@ManyToMany(()=>GroupEntity)
+@JoinTable()
+groups: GroupEntity[]
 
 @CreateDateColumn()
 created_at: Date
