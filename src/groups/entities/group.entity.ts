@@ -1,29 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { GroupStatus } from "../enums/group-status.enum";
 
-
-@Entity('groups')
+@Entity('group')
 export class GroupEntity {
 
     @PrimaryGeneratedColumn()
-    id: string
+    id: string; 
 
     @Column()
-    name: string
+    name: string;
 
     @Column({ type: "varchar", length: 500 })
     description: string;
 
-    @Column({ type: "timestamptz" })
+    @CreateDateColumn({ type: "timestamptz" })
     created_at: Date;
 
-    @Column({ type: "timestamptz" })
+    @UpdateDateColumn({ type: "timestamptz" })
     last_update_at: Date;
 
-    @Column({type: "enum", enum: GroupStatus, default: GroupStatus.ACTIVE})
-    status: GroupStatus
+    @Column({ type: "enum", enum: GroupStatus, default: GroupStatus.ACTIVE })
+    status: GroupStatus;
 
     @Column({ type: "timestamptz", nullable: true })
-    deleted_at: Date | null;
-  
+    deleted_at: Date | null; 
 }
