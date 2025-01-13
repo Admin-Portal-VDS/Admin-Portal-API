@@ -6,6 +6,7 @@ import { dataSourceOptions } from 'db/datasource';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { GroupsModule } from './groups/groups.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { GroupsModule } from './groups/groups.module';
     UsersModule,
     RolesModule,
     GroupsModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],
