@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { UserRole } from '../enums/user-role.enum';
 
 @Entity('role')
 export class RoleEntity {
-  @PrimaryGeneratedColumn()
-  id: number; // 1
+  @PrimaryColumn()
+  id: string;
 
   @Column({
     type: 'enum',
@@ -13,4 +13,7 @@ export class RoleEntity {
     default: UserRole.SUPER_USER,
   })
   name: UserRole;
+
+  @Column()
+  label: string;
 }

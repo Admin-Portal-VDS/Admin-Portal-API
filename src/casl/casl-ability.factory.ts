@@ -6,8 +6,8 @@ import {
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Action } from '../types/actions.enum';
-import { Subject } from '../types/subjects.type';
+import { Action } from './types/actions.enum';
+import { Subject } from './types/subjects.type';
 import { UserRole } from 'src/roles/enums/user-role.enum';
 
 export type AppAbility = PureAbility<[Action, Subject]>;
@@ -21,7 +21,7 @@ export class CaslAbilityFactory {
 
     switch (user.role.name) {
       case UserRole.SUPER_USER:
-        can(Action.MANAGE, 'all', { parent_id: user.id });
+        can(Action.MANAGE, 'all');
         break;
 
       case UserRole.ACCOUNT_ADMINISTRATOR:
