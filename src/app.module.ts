@@ -6,6 +6,11 @@ import { dataSourceOptions } from 'db/datasource';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { GroupsModule } from './groups/groups.module';
+import { CaslModule } from './casl/casl.module';
+import { APP_GUARD } from '@nestjs/core';
+import { CaslAbilityGuard } from './casl/casl-ability.guard';
+import { SeederModule } from './roles/seeder/seeder.module';
+import { AppSeederService } from './app.seed';
 
 @Module({
   imports: [
@@ -13,8 +18,17 @@ import { GroupsModule } from './groups/groups.module';
     UsersModule,
     RolesModule,
     GroupsModule,
+    CaslModule,
+    SeederModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    AppSeederService,
+    {
+      provide: APP_GUARD,
+      useClass: CaslAbilityGuard,
+    },
+  ],
 })
 export class AppModule {}
