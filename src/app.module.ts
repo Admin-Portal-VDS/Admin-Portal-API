@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { GroupsModule } from './groups/groups.module';
 import { CaslModule } from './casl/casl.module';
+import { TempModule } from './temp/temp.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CaslModule } from './casl/casl.module';
     RolesModule,
     GroupsModule,
     CaslModule,
+    TempModule,
   ],
   controllers: [AppController],
   providers: [AppService],
