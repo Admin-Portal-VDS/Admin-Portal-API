@@ -11,6 +11,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CaslAbilityGuard } from './casl/casl-ability.guard';
 import { SeederModule } from './roles/seeder/seeder.module';
 import { AppSeederService } from './app.seed';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AppSeederService } from './app.seed';
     GroupsModule,
     CaslModule,
     SeederModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
