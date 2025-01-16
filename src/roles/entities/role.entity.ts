@@ -1,15 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { UserRole } from '../enums/user-role.enum';
 
 @Entity('role')
 export class RoleEntity {
+  @PrimaryColumn()
+  id: string;
 
-    @PrimaryGeneratedColumn()
-    id: number; // 1
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    unique: true,
+    default: UserRole.SUPER_USER,
+  })
+  name: UserRole;
 
-    @Column({ unique: true })
-    code: string;  // e.g., "END_USER", "USER_ADMIN"
-
-    @Column()
-    label: string; // End User, User Admin
-    
+  @Column()
+  label: string;
 }
