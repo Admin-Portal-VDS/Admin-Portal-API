@@ -10,6 +10,7 @@ import { CaslModule } from './casl/casl.module';
 import { SeederModule } from './roles/seeder/seeder.module';
 import { AppSeederService } from './app.seed';
 import { AuthModule } from './auth/auth.module';
+import { PasswordModule } from './password/password.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
     CaslModule,
     SeederModule,
     AuthModule,
+    PasswordModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppSeederService],
