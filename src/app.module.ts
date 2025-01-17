@@ -11,10 +11,15 @@ import { SeederModule } from './roles/seeder/seeder.module';
 import { AppSeederService } from './app.seed';
 import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './password/password.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env.test',
+    }),
     UsersModule,
     RolesModule,
     GroupsModule,
