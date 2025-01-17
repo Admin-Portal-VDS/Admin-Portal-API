@@ -19,12 +19,20 @@ export class UsersService {
   async findAll(): Promise<UserEntity[]> {
     return await this.userRepository.find({ relations: ['role', 'groups'] });
   }
-  async findOne(id: number): Promise<UserEntity> {
+  async findById(id: number): Promise<UserEntity> {
     return await this.userRepository.findOne({
       where: { id },
       relations: ['role', 'groups'],
     });
   }
+
+  async findByEmail(email: string): Promise<UserEntity> {
+    return await this.userRepository.findOne({
+      where: { email },
+      relations: ['role', 'groups'],
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     await this.userRepository.update(id, updateUserDto);
     const updatedUser = await this.userRepository.findOne({ where: { id } });
