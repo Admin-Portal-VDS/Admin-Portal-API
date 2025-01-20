@@ -9,5 +9,6 @@ import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
   imports: [TypeOrmModule.forFeature([UserEntity])],
   providers: [UsersService, CaslAbilityFactory],
   controllers: [UsersController],
+  exports: [UsersService],
 })
 export class UsersModule {}

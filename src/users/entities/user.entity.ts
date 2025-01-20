@@ -31,6 +31,9 @@ export class UserEntity {
   @Column()
   email: string; // "john.doe@vonage.com"
 
+  @Column()
+  password: string;
+
   @ManyToOne(() => RoleEntity)
   @JoinColumn({ name: 'role_id' })
   role: RoleEntity;
