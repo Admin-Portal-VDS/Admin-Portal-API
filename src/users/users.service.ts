@@ -13,7 +13,7 @@ export class UsersService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  async create(createUserDto): Promise<any> {
+  async create(createUserDto): Promise<UserEntity[]> {
     const { password, ...rest } = createUserDto;
     const hashedPassword = await this.passwordService.hashPassword(password);
     const newUser = this.userRepository.create({

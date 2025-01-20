@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from 'src/password/password.service';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,10 @@ export class AuthService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  async validateUser(email: string, inputPassword: string): Promise<any> {
+  async validateUser(
+    email: string,
+    inputPassword: string,
+  ): Promise<Omit<UserEntity, 'password'> | null> {
     const user = await this.usersService.findByEmail(email);
     if (
       user &&
@@ -24,7 +28,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any): Promise<{ token: string }> {
+  async login(user: UserEntity): Promise<{ token: string }> {
     const { email, ...rest } = user;
     const payload = { user: rest, sub: email };
     return {

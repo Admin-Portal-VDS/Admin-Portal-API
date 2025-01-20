@@ -3,6 +3,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
 import { ConfigService } from '@nestjs/config';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,7 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       passReqToCallback: true,
     });
   }
-  async validate(user: any) {
+
+  async validate(user: UserEntity) {
     return user;
   }
 }
