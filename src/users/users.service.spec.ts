@@ -75,7 +75,6 @@ describe('UsersService', () => {
   });
 
   //get all users
-
   describe('findAll', () => {
     it('should return all users', async () => {
       jest.spyOn(userRepository, 'find').mockResolvedValue(users);
