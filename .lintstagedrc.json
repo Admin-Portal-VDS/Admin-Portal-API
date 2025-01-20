@@ -2,6 +2,9 @@
     "*.{js,ts,html}": [
       "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
       "eslint \"{src,test}/**/*.ts\" --fix"
-    ]
+    ],
+    "**/*.ts": [
+    "yarn run test --bail"
+  ]
   }
   
