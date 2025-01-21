@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
+import { UsersService } from '../users.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { PasswordService } from 'src/password/password.service';
 import { Repository } from 'typeorm';
 import {
@@ -10,7 +10,7 @@ import {
   users,
   updateUserDto,
   updatedUser,
-} from './mock/mock-user';
+} from '../mock/mock-user';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('UsersService', () => {
