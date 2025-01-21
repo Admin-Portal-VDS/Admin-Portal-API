@@ -1,17 +1,20 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { RoleEntity } from 'src/roles/entities/role.entity';
 import { GroupEntity } from 'src/groups/entities/group.entity';
 
 @Entity('user')
+@Unique(['email'])
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -57,4 +60,7 @@ export class UserEntity {
 
   @Column()
   createdBy: number; // it will store the id of immediate parent
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

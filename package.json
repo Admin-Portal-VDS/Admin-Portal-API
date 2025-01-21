@@ -18,11 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "npm run build && npx typeorm -d dist/db/datasource.js",
+    "typeorm": "yarn run build && npx typeorm -d dist/db/datasource.js",
     "migration:create": "npx typeorm migration:create",
-    "migration:generate": "NODE_ENV=test npm run typeorm -- migration:generate",
-    "migration:run": "NODE_ENV=test npm run typeorm -- migration:run",
-    "migration:revert": "NODE_ENV=test npm run typeorm -- migration:revert",
+    "migration:generate": "NODE_ENV=test yarn run typeorm -- migration:generate",
+    "migration:run": "NODE_ENV=test yarn run typeorm -- migration:run",
+    "migration:revert": "NODE_ENV=test yarn run typeorm -- migration:revert",
+    "db:drop":"yarn run typeorm schema:drop",
     "prepare": "husky"
   },
   "dependencies": {
