@@ -1,7 +1,10 @@
 {
     "*.{js,ts,html}": [
-      "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-      "eslint \"{src,test}/**/*.ts\" --fix"
-    ]
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.ts": [
+    "yarn run test --bail --passWithNoTests"
+  ]
   }
   
