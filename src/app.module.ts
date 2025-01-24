@@ -18,7 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot(dataSourceOptions),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.test',
+      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env.prod',
     }),
     UsersModule,
     RolesModule,
