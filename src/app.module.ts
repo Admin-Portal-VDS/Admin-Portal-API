@@ -12,6 +12,7 @@ import { AppSeederService } from './app.seed';
 import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './password/password.module';
 import { ConfigModule } from '@nestjs/config';
+import { BaseModule } from './common/base/base.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConfigModule } from '@nestjs/config';
     SeederModule,
     AuthModule,
     PasswordModule,
+    BaseModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppSeederService],
