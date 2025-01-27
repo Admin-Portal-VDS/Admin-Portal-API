@@ -1,0 +1,27 @@
+name: 'admin-portal-api'
+
+services:
+  admin-portal-api:
+    build: .
+    container_name: admin-portal-api
+    ports:
+      - "${API_PORT}:8000"  
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:17
+    container_name: db
+    environment:
+      POSTGRES_USER: ${PG_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PG_DB_PASSWORD}
+      POSTGRES_DB: ${PG_DB_DATABASE}
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+    restart: always
+
+volumes:
+  postgres_data:  
