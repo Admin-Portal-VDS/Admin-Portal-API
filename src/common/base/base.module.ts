@@ -1,5 +1,8 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BaseEntity } from 'typeorm';
 
-@Global()
-@Module({})
+@Module({
+  imports: [TypeOrmModule.forFeature([BaseEntity])],
+})
 export class BaseModule {}

@@ -1,7 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -12,10 +10,12 @@ import {
 } from 'typeorm';
 import { RoleEntity } from 'src/roles/entities/role.entity';
 import { GroupEntity } from 'src/groups/entities/group.entity';
+import { BaseEntity } from 'src/common/base/entities/base.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('user')
 @Unique(['email'])
-export class UserEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -35,6 +35,7 @@ export class UserEntity {
   email: string; // "john.doe@vonage.com"
 
   @Column()
+  @Exclude()
   password: string;
 
   @ManyToOne(() => RoleEntity)
@@ -54,13 +55,4 @@ export class UserEntity {
     },
   })
   groups: GroupEntity[];
-
-  @CreateDateColumn({ type: 'timestamptz' })
-  created_at: Date;
-
-  @Column()
-  createdBy: number; // it will store the id of immediate parent
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

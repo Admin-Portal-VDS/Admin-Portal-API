@@ -15,7 +15,7 @@ export class AuthService {
   async validateUser(
     email: string,
     inputPassword: string,
-  ): Promise<Omit<UserEntity, 'password'> | null> {
+  ): Promise<UserWithoutPassword | null> {
     const user = await this.usersService.findByEmail(email);
     if (
       user &&

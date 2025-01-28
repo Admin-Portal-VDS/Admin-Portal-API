@@ -3,11 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { BaseEntity } from './entities/base.entity';
 
 @Injectable()
-export abstract class BaseService<T> {
+export abstract class BaseService<T extends BaseEntity> {
   constructor(protected readonly repository: Repository<T>) {}
 
   async create(createDto: DeepPartial<T>): Promise<T> {
@@ -32,11 +33,12 @@ export abstract class BaseService<T> {
     }
   }
 
-  async findOne(id: any, relations?: string[]): Promise<T> {
+  async findOne(id: number, options?: Options): Promise<T> {
     try {
       const entity = await this.repository.findOne({
-        where: { id } as any,
-        relations: relations || [],
+        where: { id } as FindOptionsWhere<T>,
+        relations: options?.relations || [],
+        withDeleted: options?.withDeleted === true,
       });
 
       if (!entity) {
@@ -65,18 +67,15 @@ export abstract class BaseService<T> {
     }
   }
 
-  async remove(id: any): Promise<T> {
+  async remove(id: number): Promise<T> {
     try {
-      const toBeDeleted = await this.findOne(id);
       if (this.repository.metadata.deleteDateColumn) {
         await this.repository.softDelete(id);
       } else {
-        const result = await this.repository.delete(id);
-        if (result.affected === 0) {
-          throw new NotFoundException(`Entity with ID ${id} not found`);
-        }
+        await this.repository.delete(id);
       }
-      return toBeDeleted;
+      const deletedEntity = await this.findOne(id, { withDeleted: true });
+      return deletedEntity;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       throw new BadRequestException(

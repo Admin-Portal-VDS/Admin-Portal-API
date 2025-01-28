@@ -32,8 +32,6 @@ export const user = {
   },
   password: 'hashed_abcdef',
   groups: null,
-  created_at: new Date(),
-  createdBy: 0,
 } as UserEntity;
 
 export const users = [

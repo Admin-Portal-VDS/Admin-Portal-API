@@ -24,8 +24,9 @@ export class UsersService extends BaseService<UserEntity> {
   async findAll(): Promise<UserEntity[]> {
     return super.findAll(['role', 'groups']);
   }
-  async findOne(id: number): Promise<UserEntity> {
-    return super.findOne(id, ['role', 'groups']);
+  async findOne(id: number, options?: Options): Promise<UserEntity> {
+    const newOptions = { ...options, relations: ['role', 'groups'] };
+    return super.findOne(id, newOptions);
   }
 
   async findByEmail(email: string): Promise<UserEntity> {
@@ -42,9 +43,5 @@ export class UsersService extends BaseService<UserEntity> {
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     const updatedUser = await super.update(id, updateUserDto);
     return updatedUser;
-  }
-  async remove(id: number): Promise<UserEntity> {
-    const deletedUser = await super.remove(id);
-    return deletedUser;
   }
 }
