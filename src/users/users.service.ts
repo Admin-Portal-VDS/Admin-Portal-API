@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,9 +20,11 @@ export class UsersService extends BaseService<UserEntity, string | number> {
     const hashedPassword = await this.passwordService.hashPassword(password);
     return super.create({ ...rest, password: hashedPassword });
   }
+
   async findAll(): Promise<UserEntity[]> {
     return super.findAll(['role', 'groups']);
   }
+
   async findOne(
     key: keyof UserEntity,
     id: string | number,
@@ -31,25 +32,5 @@ export class UsersService extends BaseService<UserEntity, string | number> {
   ): Promise<UserEntity> {
     const newOptions = { ...options, relations: ['role', 'groups'] };
     return super.findOne(key, id, newOptions);
-  }
-
-  async findByEmail(email: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({
-      where: { email },
-      relations: ['role', 'groups'],
-    });
-    if (!user) {
-      throw new NotFoundException(`No user found with email ${email}`);
-    }
-    return user;
-  }
-
-  async update(
-    key: keyof UserEntity,
-    id: string | number,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UserEntity> {
-    const updatedUser = await super.update(key, id, updateUserDto);
-    return updatedUser;
   }
 }

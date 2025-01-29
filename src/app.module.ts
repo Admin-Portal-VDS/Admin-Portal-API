@@ -12,7 +12,7 @@ import { AppSeederService } from './app.seed';
 import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './password/password.module';
 import { ConfigModule } from '@nestjs/config';
-import { BaseModule } from './common/base/base.module';
+import { BaseModule } from './common/base/modules/base.module';
 
 @Module({
   imports: [
