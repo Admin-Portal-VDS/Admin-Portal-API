@@ -8,7 +8,7 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import { BaseEntity } from './entities/base.entity';
 
 @Injectable()
-export abstract class BaseService<T extends BaseEntity> {
+export abstract class BaseService<T extends BaseEntity<ID>, ID> {
   constructor(protected readonly repository: Repository<T>) {}
 
   async create(createDto: DeepPartial<T>): Promise<T> {
@@ -33,10 +33,11 @@ export abstract class BaseService<T extends BaseEntity> {
     }
   }
 
-  async findOne(id: number, options?: Options): Promise<T> {
+  async findOne(key: keyof T, id: ID, options?: Options): Promise<T> {
     try {
+      const whereCondition = { [key]: id } as FindOptionsWhere<T>;
       const entity = await this.repository.findOne({
-        where: { id } as FindOptionsWhere<T>,
+        where: whereCondition,
         relations: options?.relations || [],
         withDeleted: options?.withDeleted === true,
       });
@@ -54,11 +55,19 @@ export abstract class BaseService<T extends BaseEntity> {
     }
   }
 
-  async update(id: any, updateDto: QueryDeepPartialEntity<T>): Promise<T> {
+  async update(
+    key: keyof T,
+    id: ID,
+    updateDto: QueryDeepPartialEntity<T>,
+  ): Promise<T> {
     try {
-      await this.findOne(id);
-      await this.repository.update(id, updateDto as QueryDeepPartialEntity<T>);
-      return this.findOne(id);
+      const whereCondition = { [key]: id } as FindOptionsWhere<T>;
+      await this.findOne(key, id);
+      await this.repository.update(
+        whereCondition,
+        updateDto as QueryDeepPartialEntity<T>,
+      );
+      return this.findOne(key, id);
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       throw new BadRequestException(
@@ -67,14 +76,15 @@ export abstract class BaseService<T extends BaseEntity> {
     }
   }
 
-  async remove(id: number): Promise<T> {
+  async remove(key: keyof T, id: ID): Promise<T> {
     try {
+      const whereCondition = { [key]: id } as FindOptionsWhere<T>;
       if (this.repository.metadata.deleteDateColumn) {
-        await this.repository.softDelete(id);
+        await this.repository.softDelete(whereCondition);
       } else {
-        await this.repository.delete(id);
+        await this.repository.delete(whereCondition);
       }
-      const deletedEntity = await this.findOne(id, { withDeleted: true });
+      const deletedEntity = await this.findOne(key, id, { withDeleted: true });
       return deletedEntity;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;

@@ -7,7 +7,7 @@ import { PasswordService } from 'src/password/password.service';
 import { BaseService } from 'src/common/base/base.service';
 
 @Injectable()
-export class UsersService extends BaseService<UserEntity> {
+export class UsersService extends BaseService<UserEntity, string | number> {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -24,9 +24,13 @@ export class UsersService extends BaseService<UserEntity> {
   async findAll(): Promise<UserEntity[]> {
     return super.findAll(['role', 'groups']);
   }
-  async findOne(id: number, options?: Options): Promise<UserEntity> {
+  async findOne(
+    key: keyof UserEntity,
+    id: string | number,
+    options?: Options,
+  ): Promise<UserEntity> {
     const newOptions = { ...options, relations: ['role', 'groups'] };
-    return super.findOne(id, newOptions);
+    return super.findOne(key, id, newOptions);
   }
 
   async findByEmail(email: string): Promise<UserEntity> {
@@ -40,8 +44,12 @@ export class UsersService extends BaseService<UserEntity> {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    const updatedUser = await super.update(id, updateUserDto);
+  async update(
+    key: keyof UserEntity,
+    id: string | number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
+    const updatedUser = await super.update(key, id, updateUserDto);
     return updatedUser;
   }
 }
