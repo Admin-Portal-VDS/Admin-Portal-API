@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { BaseEntity } from './entities/base.entity';
+import { BaseEntity } from '../entities/base.entity';
 
 @Injectable()
 export abstract class BaseService<T extends BaseEntity<ID>, ID> {

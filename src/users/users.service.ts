@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PasswordService } from 'src/password/password.service';
-import { BaseService } from 'src/common/base/base.service';
+import { BaseService } from 'src/common/base/services/base.service';
 
 @Injectable()
 export class UsersService extends BaseService<UserEntity, string | number> {
