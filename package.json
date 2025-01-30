@@ -23,7 +23,7 @@
     "migration:generate": "NODE_ENV=test yarn run typeorm -- migration:generate",
     "migration:run": "NODE_ENV=test yarn run typeorm -- migration:run",
     "migration:revert": "NODE_ENV=test yarn run typeorm -- migration:revert",
-    "db:drop":"yarn run typeorm schema:drop",
+    "db:drop": "yarn run typeorm schema:drop",
     "prepare": "husky"
   },
   "dependencies": {
@@ -34,6 +34,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.2",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^11.0.3",
     "@nestjs/typeorm": "^10.0.2",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
@@ -91,8 +92,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-     "moduleNameMapper": {
-    "^src/(.*)$": "<rootDir>/$1"
-  }
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

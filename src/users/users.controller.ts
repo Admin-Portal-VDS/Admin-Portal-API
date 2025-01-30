@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +21,7 @@ import { Public } from 'src/auth/auth.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
@@ -40,16 +43,22 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findById(+id);
+    const parsedId = isNaN(Number(id)) ? id : Number(id);
+    const key: keyof UserEntity = isNaN(Number(id)) ? 'email' : 'id';
+    return this.userService.findOne(key, parsedId);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    this.userService.update(+id, updateUserDto);
+    const parsedId = isNaN(Number(id)) ? id : Number(id);
+    const key: keyof UserEntity = isNaN(Number(id)) ? 'email' : 'id';
+    return this.userService.update(key, parsedId, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    const parsedId = isNaN(Number(id)) ? id : Number(id);
+    const key: keyof UserEntity = isNaN(Number(id)) ? 'email' : 'id';
+    return this.userService.remove(key, parsedId);
   }
 }
