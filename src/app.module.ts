@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './password/password.module';
 import { ConfigModule } from '@nestjs/config';
 import { BaseModule } from './common/base/modules/base.module';
+import { SearchModule } from './search/search/search.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BaseModule } from './common/base/modules/base.module';
       envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env.prod',
     }),
     UsersModule,
+    SearchModule,
     RolesModule,
     GroupsModule,
     CaslModule,
