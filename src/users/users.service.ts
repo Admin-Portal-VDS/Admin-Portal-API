@@ -4,6 +4,7 @@ import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PasswordService } from 'src/password/password.service';
 import { BaseService } from 'src/common/base/services/base.service';
+import { SearchService } from 'src/search/search/search.service';
 
 @Injectable()
 export class UsersService extends BaseService<UserEntity, string | number> {
@@ -11,6 +12,7 @@ export class UsersService extends BaseService<UserEntity, string | number> {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly passwordService: PasswordService,
+    private readonly searchService: SearchService,
   ) {
     super(userRepository);
   }
@@ -18,7 +20,9 @@ export class UsersService extends BaseService<UserEntity, string | number> {
   async create(createUserDto): Promise<UserEntity> {
     const { password, ...rest } = createUserDto;
     const hashedPassword = await this.passwordService.hashPassword(password);
-    return super.create({ ...rest, password: hashedPassword });
+    const user = await super.create({ ...rest, password: hashedPassword });
+    await this.searchService.indexUser(user);
+    return user;
   }
 
   async findAll(): Promise<UserEntity[]> {
@@ -32,5 +36,10 @@ export class UsersService extends BaseService<UserEntity, string | number> {
   ): Promise<UserEntity> {
     const newOptions = { ...options, relations: ['role', 'groups'] };
     return super.findOne(key, id, newOptions);
+  }
+
+  async search(key: string) {
+    const results = this.searchService.search(key);
+    return results;
   }
 }

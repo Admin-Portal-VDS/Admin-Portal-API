@@ -17,7 +17,7 @@ import { SearchService } from './search.service';
     }),
   ],
   providers: [SearchService],
-  exports: [ElasticsearchModule],
+  exports: [ElasticsearchModule, SearchService],
 })
 export class SearchModule implements OnModuleInit {
   constructor(private readonly searchService: SearchService) {}

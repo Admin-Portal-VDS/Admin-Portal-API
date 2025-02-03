@@ -1,3 +1,4 @@
+import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
@@ -41,28 +42,8 @@ export class SearchService {
                 fields: { keyword: { type: 'keyword' } },
               },
               email: { type: 'keyword' },
-              role: {
-                properties: {
-                  id: { type: 'keyword' },
-                  name: { type: 'keyword' },
-                  label: {
-                    type: 'text',
-                    fields: { keyword: { type: 'keyword' } },
-                  },
-                },
-              },
-              groups: {
-                type: 'nested',
-                properties: {
-                  id: { type: 'integer' },
-                  name: {
-                    type: 'text',
-                    fields: { keyword: { type: 'keyword' } },
-                  },
-                  description: { type: 'text' },
-                  status: { type: 'keyword' },
-                },
-              },
+              role: { type: 'text' },
+              groups: { type: 'text' },
             },
           },
         },
@@ -75,11 +56,42 @@ export class SearchService {
   }
 
   public async indexUser(user: any) {
-    return await this.esService.index({
+    console.log(user);
+    const result = await this.esService.index({
       index: this.configService.get<string>('ELASTIC_INDEX'),
       body: user,
     });
+    console.log(result);
+    return result;
   }
+
+  public async search(key: string) {
+    const response: SearchResponse<any> = await this.esService.search({
+      index: this.configService.get<string>('ELASTIC_INDEX'),
+      body: {
+        query: {
+          multi_match: {
+            query: key,
+            fuzziness: 'AUTO',
+          },
+        },
+      },
+    });
+    console.log('Elastic response', response);
+    return response.hits?.hits.map((item) => item._source) || [];
+  }
+  // public async searchAll(key:string) {
+  //   const response: SearchResponse<any> = await this.esService.search({
+  //     index: this.configService.get<string>('ELASTIC_INDEX'),
+  //     body: {
+  //       query: {
+  //         match_all: {}
+  //       }
+  //     }
+  //   });
+
+  //   return response.hits.hits;
+  // }
 
   public async remove(id: number) {
     this.esService.deleteByQuery({
