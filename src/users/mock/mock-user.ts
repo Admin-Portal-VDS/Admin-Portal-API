@@ -4,13 +4,14 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 export const createUserDto = {
+  id: 1,
   parent_id: 0,
   first_name: 'John',
   last_name: 'Doe',
   login_name: 'johndoe',
   email: 'john.doe@vonage.com',
   role: {
-    id: 'SUPERUSER',
+    id: 1,
     name: UserRole.SUPER_USER,
     label: 'Super User',
     createdAt: new Date(),
@@ -19,6 +20,9 @@ export const createUserDto = {
   },
   password: 'abcdef',
   createdBy: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  deletedAt: new Date(),
 } as CreateUserDto;
 
 export const user = {
@@ -29,12 +33,18 @@ export const user = {
   login_name: 'johndoe',
   email: 'john.doe@vonage.com',
   role: {
-    id: 'SUPERUSER',
+    id: 1,
     name: UserRole.SUPER_USER,
     label: 'Super User',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: new Date(),
   },
   password: 'hashed_abcdef',
   groups: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  deletedAt: new Date(),
 } as UserEntity;
 
 export const users = [
