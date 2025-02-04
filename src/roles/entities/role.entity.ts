@@ -1,17 +1,11 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { UserRole } from '../enums/user-role.enum';
 import { BaseEntity } from 'src/common/base/entities/base.entity';
 
 @Entity('role')
 export class RoleEntity extends BaseEntity {
   @PrimaryColumn()
-  id: string;
+  id: number;
 
   @Column({
     type: 'enum',
@@ -23,13 +17,4 @@ export class RoleEntity extends BaseEntity {
 
   @Column()
   label: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column({ nullable: true })
-  deletedAt: Date;
 }

@@ -23,7 +23,7 @@ export class RolesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<RoleEntity> {
-    return this.roleService.findOne(id);
+    return this.roleService.findOne('id', id);
   }
 
   @Post()
@@ -36,11 +36,11 @@ export class RolesController {
     @Param('id') id: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ): Promise<RoleEntity> {
-    return this.roleService.update(id, updateRoleDto);
+    return this.roleService.update('id', id, updateRoleDto);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
-    return this.roleService.delete(id);
+    return this.roleService.delete('id', id);
   }
 }

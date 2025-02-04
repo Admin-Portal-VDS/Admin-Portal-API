@@ -75,29 +75,6 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
       );
     }
   }
-
-  async findByEmail(key: keyof T, email: string): Promise<T> {
-    try {
-      const whereCondition = { [key]: email } as FindOptionsWhere<T>;
-      const entity = await this.repository.findOne({
-        where: whereCondition,
-        relations: [],
-      });
-
-      if (!entity) {
-        throw new NotFoundException(`Entity with '${email}' not found`);
-      }
-
-      return entity;
-    } catch (error) {
-      console.error('FindByEmail Error:', error);
-      if (error instanceof NotFoundException) throw error;
-
-      throw new BadRequestException(
-        `Failed to find entity by ${email}: ${error.message}`,
-      );
-    }
-  }
   async remove(key: keyof T, id: ID): Promise<T> {
     try {
       const whereCondition = { [key]: id } as FindOptionsWhere<T>;
