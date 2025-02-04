@@ -61,4 +61,9 @@ export class UsersController {
     const key: keyof UserEntity = isNaN(Number(id)) ? 'email' : 'id';
     return this.userService.remove(key, parsedId);
   }
+
+  @Get('search/:key')
+  search(@Param('key') key: string) {
+    return this.userService.search(key);
+  }
 }
