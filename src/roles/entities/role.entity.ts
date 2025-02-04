@@ -1,10 +1,11 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { UserRole } from '../enums/user-role.enum';
+import { BaseEntity } from 'src/common/base/entities/base.entity';
 
 @Entity('role')
-export class RoleEntity {
+export class RoleEntity extends BaseEntity {
   @PrimaryColumn()
-  id: string;
+  id: number;
 
   @Column({
     type: 'enum',
