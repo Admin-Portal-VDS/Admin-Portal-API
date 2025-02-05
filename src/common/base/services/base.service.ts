@@ -48,7 +48,6 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
 
       return entity;
     } catch (error) {
-      console.error('FindOne Error:', error); // Add detailed logging
       if (error instanceof NotFoundException) throw error;
 
       throw new BadRequestException(error);
