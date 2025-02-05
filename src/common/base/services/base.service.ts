@@ -78,11 +78,9 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
   async remove(key: keyof T, id: ID): Promise<T> {
     try {
       const whereCondition = { [key]: id } as FindOptionsWhere<T>;
-      if (this.repository.metadata.deleteDateColumn) {
-        await this.repository.softDelete(whereCondition);
-      } else {
-        await this.repository.delete(whereCondition);
-      }
+
+      await this.repository.softDelete(whereCondition);
+
       const deletedEntity = await this.findOne(key, id, { withDeleted: true });
       return deletedEntity;
     } catch (error) {
