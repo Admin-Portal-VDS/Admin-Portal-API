@@ -12,12 +12,4 @@ export class GroupsService extends BaseService<GroupEntity, string | number> {
   ) {
     super(groupRepository);
   }
-
-  async findOne(
-    key: keyof GroupEntity,
-    id: string | number,
-    options?: Options,
-  ): Promise<GroupEntity> {
-    return super.findOne(key, id, options);
-  }
 }
