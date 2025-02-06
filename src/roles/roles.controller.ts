@@ -16,6 +16,11 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 export class RolesController {
   constructor(private readonly roleService: RolesService) {}
 
+  @Post()
+  async create(@Body() createRoleDto: CreateRoleDto): Promise<RoleEntity> {
+    return this.roleService.create(createRoleDto);
+  }
+
   @Get()
   async findAll(): Promise<RoleEntity[]> {
     return this.roleService.findAll();
@@ -23,12 +28,7 @@ export class RolesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<RoleEntity> {
-    return this.roleService.findOne(id);
-  }
-
-  @Post()
-  async create(@Body() createRoleDto: CreateRoleDto): Promise<RoleEntity> {
-    return this.roleService.create(createRoleDto);
+    return this.roleService.findOne('id', id);
   }
 
   @Put(':id')
@@ -36,11 +36,11 @@ export class RolesController {
     @Param('id') id: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ): Promise<RoleEntity> {
-    return this.roleService.update(id, updateRoleDto);
+    return this.roleService.update('id', id, updateRoleDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
-    return this.roleService.delete(id);
+  async delete(@Param('id') id: string): Promise<RoleEntity> {
+    return this.roleService.remove('id', id);
   }
 }

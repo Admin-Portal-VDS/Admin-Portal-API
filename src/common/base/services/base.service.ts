@@ -75,7 +75,6 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
       );
     }
   }
-
   async remove(key: keyof T, id: ID): Promise<T> {
     try {
       const whereCondition = { [key]: id } as FindOptionsWhere<T>;
