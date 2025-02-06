@@ -16,13 +16,13 @@ export const createUserDto = {
     label: 'Super User',
     createdAt: new Date(),
     updatedAt: new Date(),
-    deletedAt: new Date(),
+    deletedAt: null,
   },
   password: 'abcdef',
   createdBy: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: new Date(),
+  deletedAt: null,
 } as CreateUserDto;
 
 export const user = {
@@ -38,14 +38,19 @@ export const user = {
     label: 'Super User',
     createdAt: new Date(),
     updatedAt: new Date(),
-    deletedAt: new Date(),
+    deletedAt: null,
   },
   password: 'hashed_abcdef',
   groups: null,
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: new Date(),
+  deletedAt: null,
 } as UserEntity;
+
+export const deletedUser = {
+  ...user,
+  deletedAt: new Date(),
+};
 
 export const users = [
   {
