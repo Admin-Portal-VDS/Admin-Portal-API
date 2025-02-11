@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from 'src/password/password.service';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { SignupDto } from './dto/signup.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +27,22 @@ export class AuthService {
       return userWithoutPassword;
     }
     return null;
+  }
+
+  async signup(@Body() inputUser: SignupDto) {
+    const { email, password, confirmPassword } = inputUser;
+    this.passwordService.plainPasswordMatch(password, confirmPassword);
+    const user = {
+      email,
+      password,
+      role: 1,
+    };
+    await this.usersService.create(user);
+    const savedUser = await this.usersService.findOne('email', email);
+    await this.usersService.update('email', email, { parent_id: savedUser.id });
+    return {
+      success: true,
+    };
   }
 
   async login(user: UserEntity): Promise<{ token: string }> {

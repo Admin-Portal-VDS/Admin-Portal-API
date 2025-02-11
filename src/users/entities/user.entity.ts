@@ -5,7 +5,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { RoleEntity } from 'src/roles/entities/role.entity';
@@ -16,19 +15,16 @@ import { Exclude } from 'class-transformer';
 @Entity('user')
 @Unique(['email'])
 export class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Column({ nullable: true })
+  parent_id: number;
 
-  @Column()
-  parent_id: number; // it will store the id of superuser
-
-  @Column()
+  @Column({ nullable: true })
   first_name: string; // "John"
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string; // "Doe"
 
-  @Column()
+  @Column({ nullable: true })
   login_name: string; // "johndoe"
 
   @Column()
