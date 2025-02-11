@@ -21,8 +21,12 @@ export class UsersService extends BaseService<UserEntity, string | number> {
     const { password, ...rest } = createUserDto;
     const hashedPassword = await this.passwordService.hashPassword(password);
     const user = await super.create({ ...rest, password: hashedPassword });
-    await this.searchService.indexUser(user);
-    return user;
+    const savedUser = await this.findOne('email', user.email);
+    const userWithParentId = await this.update('email', user.email, {
+      parent_id: savedUser.id,
+    });
+    await this.searchService.indexUser(userWithParentId);
+    return userWithParentId;
   }
 
   async findAll(): Promise<UserEntity[]> {

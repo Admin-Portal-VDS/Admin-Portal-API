@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import 'reflect-metadata';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { DuplicateEntyFilter } from './common/filters/duplicate-entry.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,7 +26,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  console.log('ValidationPipe is set globally');
+  app.useGlobalFilters(new DuplicateEntyFilter());
 
   await app.listen(process.env.API_PORT ?? 8000);
 }

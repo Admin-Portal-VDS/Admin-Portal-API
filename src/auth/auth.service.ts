@@ -2,15 +2,16 @@ import { Body, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from 'src/password/password.service';
-import { UserEntity } from 'src/users/entities/user.entity';
 import { SignupDto } from './dto/signup.dto';
-
+import { LoginDto } from './dto/login.dto';
+import { RolesService } from 'src/roles/roles.service';
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
     private readonly passwordService: PasswordService,
+    private readonly rolesService: RolesService,
   ) {}
 
   async validateUser(
@@ -32,20 +33,22 @@ export class AuthService {
   async signup(@Body() inputUser: SignupDto) {
     const { email, password, confirmPassword } = inputUser;
     this.passwordService.plainPasswordMatch(password, confirmPassword);
+    const SUPERUSER = await this.rolesService.findOne('id', 1);
     const user = {
       email,
       password,
-      role: 1,
+      role: SUPERUSER,
+      first_name: 'Anonymous',
+      last_name: 'User',
+      login_name: 'anonymous_user',
     };
     await this.usersService.create(user);
-    const savedUser = await this.usersService.findOne('email', email);
-    await this.usersService.update('email', email, { parent_id: savedUser.id });
     return {
       success: true,
     };
   }
 
-  async login(user: UserEntity): Promise<{ token: string }> {
+  async login(user: LoginDto): Promise<{ token: string }> {
     const { email, ...rest } = user;
     const payload = { user: rest, sub: email };
     return {
