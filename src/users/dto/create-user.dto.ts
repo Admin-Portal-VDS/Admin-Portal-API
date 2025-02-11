@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsEmail,
@@ -15,22 +16,27 @@ export class CreateUserDto {
   @IsOptional()
   parent_id?: number;
 
+  @ApiProperty({ example: 'John' })
   @IsNotEmpty()
   @IsString()
   first_name: string;
 
+  @ApiProperty({ example: 'Doe' })
   @IsNotEmpty()
   @IsString()
   last_name: string;
 
+  @ApiProperty({ example: 'john_doe' })
   @IsNotEmpty()
   @IsString()
   login_name: string;
 
+  @ApiProperty({ example: 'johndoe@gmail.com' })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @ApiProperty({ example: 'Test@1234' })
   @IsNotEmpty()
   @IsString()
   password: string;
