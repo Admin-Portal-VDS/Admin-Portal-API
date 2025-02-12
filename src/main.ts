@@ -8,6 +8,12 @@ import { DuplicateEntyFilter } from './common/filters/duplicate-entry.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Admin Portal API')
     .setDescription(
