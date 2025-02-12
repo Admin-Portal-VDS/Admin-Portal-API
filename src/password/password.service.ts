@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -15,5 +15,11 @@ export class PasswordService {
     hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
+  }
+
+  plainPasswordMatch(password: string, confirmPassword: string) {
+    if (password !== confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
   }
 }

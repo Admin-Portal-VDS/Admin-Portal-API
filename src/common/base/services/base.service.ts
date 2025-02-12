@@ -16,9 +16,9 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
       const entity = this.repository.create(createDto);
       return await this.repository.save(entity);
     } catch (error) {
-      throw new BadRequestException(
-        `Failed to create entity: ${error.message}`,
-      );
+      if (error.code === '23505') {
+        throw error;
+      }
     }
   }
 

@@ -16,8 +16,6 @@ export class SearchService {
     const indexExists = await this.esService.indices.exists({ index });
 
     if (!indexExists) {
-      console.log(`Creating index: ${index}`);
-
       await this.esService.indices.create({
         index,
         body: {
@@ -42,26 +40,21 @@ export class SearchService {
                 fields: { keyword: { type: 'keyword' } },
               },
               email: { type: 'keyword' },
-              role: { type: 'text' },
-              groups: { type: 'text' },
+              role: { type: 'object' },
+              groups: { type: 'object' },
             },
           },
         },
       });
-
-      console.log(`Index ${index} created successfully.`);
     } else {
-      console.log(`Index ${index} already exists.`);
     }
   }
 
   public async indexUser(user: any) {
-    console.log(user);
     const result = await this.esService.index({
       index: this.configService.get<string>('ELASTIC_INDEX'),
       body: user,
     });
-    console.log(result);
     return result;
   }
 
@@ -77,7 +70,6 @@ export class SearchService {
         },
       },
     });
-    console.log('Elastic response', response);
     return response.hits?.hits.map((item) => item._source) || [];
   }
   // public async searchAll(key:string) {

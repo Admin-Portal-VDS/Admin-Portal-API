@@ -10,11 +10,11 @@ COPY . .
 
 RUN yarn run build
 
-ENV NODE_ENV=prod
+ENV NODE_ENV=test
 
 EXPOSE  8000
 
-CMD [ "npm","run","start:prod" ]
+CMD [ "yarn","run","start:dev" ]
 
 
 
