@@ -9,13 +9,15 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { Action } from './types/actions.enum';
 import { Subject } from './types/subjects.type';
 import { UserRole } from 'src/roles/enums/user-role.enum';
+import { GroupEntity } from 'src/groups/entities/group.entity';
+import { RoleEntity } from 'src/roles/entities/role.entity';
 
 export type AppAbility = PureAbility<[Action, Subject]>;
 
 @Injectable()
 export class CaslAbilityFactory {
   defineAbilityFor(user: UserEntity) {
-    const { can, build } = new AbilityBuilder<AppAbility>(
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(
       PureAbility as AbilityClass<AppAbility>,
     );
 
@@ -23,8 +25,12 @@ export class CaslAbilityFactory {
       case UserRole.SUPER_USER:
         can(Action.MANAGE, 'all');
         break;
-
+      case UserRole.BILLING_ADMINISTRATOR:
+        break;
       case UserRole.ACCOUNT_ADMINISTRATOR:
+        can(Action.MANAGE, UserEntity);
+        can(Action.MANAGE, GroupEntity);
+        can(Action.MANAGE, RoleEntity);
         break;
       case UserRole.CALL_QUEUE_ADMINISTRATOR:
         break;
@@ -35,6 +41,10 @@ export class CaslAbilityFactory {
         break;
 
       case UserRole.USER_ADMINISTRATOR:
+        can(Action.MANAGE, UserEntity);
+        can(Action.READ, GroupEntity);
+        can(Action.READ, RoleEntity);
+        cannot(Action.DELETE, UserEntity);
         break;
 
       case UserRole.END_USER:

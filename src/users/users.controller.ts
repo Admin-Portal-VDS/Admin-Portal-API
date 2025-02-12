@@ -7,40 +7,38 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { CheckPermission } from 'src/casl/casl-ability.decorator';
 import { Action } from 'src/casl/types/actions.enum';
 import { UserEntity } from './entities/user.entity';
-import { Public } from 'src/auth/auth.decorator';
+import { CaslAbilityGuard } from 'src/casl/casl-ability.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(
-    private readonly userService: UsersService,
-    private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  constructor(private readonly userService: UsersService) {}
 
-  @Public()
   @Post()
+  @UseGuards(JwtAuthGuard, CaslAbilityGuard)
   @CheckPermission({ action: Action.CREATE, subject: UserEntity })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  findAll() {
+  @UseGuards(JwtAuthGuard, CaslAbilityGuard)
+  findAll(@Request() req) {
+    console.log(req.user);
     return this.userService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     const parsedId = isNaN(Number(id)) ? id : Number(id);

@@ -14,7 +14,7 @@ import { IS_PUBLIC } from 'src/auth/auth.decorator';
 export class CaslAbilityGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private caslAbilityFactory: CaslAbilityFactory,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -30,9 +30,12 @@ export class CaslAbilityGuard implements CanActivate {
         CHECK_PERMISSION,
         context.getHandler(),
       ) || [];
-
-    const { user } = context.switchToHttp().getRequest();
-    const ability = this.caslAbilityFactory.defineAbilityFor(user);
+    const request = context.switchToHttp().getRequest();
+    const { user } = request;
+    if (!user) {
+      throw new ForbiddenException('User not authenticated');
+    }
+    const ability = this.caslAbilityFactory.defineAbilityFor(user.user);
 
     try {
       rules.forEach((rule) =>
