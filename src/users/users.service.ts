@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,13 +20,20 @@ export class UsersService extends BaseService<UserEntity, string | number> {
   async create(createUserDto): Promise<UserEntity> {
     const { password, ...rest } = createUserDto;
     const hashedPassword = await this.passwordService.hashPassword(password);
-    const user = await super.create({ ...rest, password: hashedPassword });
-    const savedUser = await this.findOne('email', user.email);
-    const userWithParentId = await this.update('email', user.email, {
-      parent_id: savedUser.id,
-    });
-    await this.searchService.indexUser(userWithParentId);
-    return userWithParentId;
+    try {
+      const user = await super.create({ ...rest, password: hashedPassword });
+      const savedUser = await this.findOne('email', user.email);
+      const userWithParentId = await this.update('email', user.email, {
+        parent_id: savedUser.id,
+      });
+      await this.searchService.indexUser(userWithParentId);
+      return userWithParentId;
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('This email is already in use.');
+      }
+      throw error;
+    }
   }
 
   async findAll(): Promise<UserEntity[]> {
