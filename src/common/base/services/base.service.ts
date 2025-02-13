@@ -6,6 +6,7 @@ import {
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseEntity } from '../entities/base.entity';
+import { toPascalCase } from 'src/common/utils/utils';
 
 @Injectable()
 export abstract class BaseService<T extends BaseEntity<ID>, ID> {
@@ -43,7 +44,7 @@ export abstract class BaseService<T extends BaseEntity<ID>, ID> {
       });
 
       if (!entity) {
-        throw new NotFoundException(`Entity not found`);
+        throw new NotFoundException(`${toPascalCase(String(key))} not found.`);
       }
 
       return entity;
