@@ -19,10 +19,12 @@ export class AuthService {
     inputPassword: string,
   ): Promise<UserWithoutPassword | null> {
     const user = await this.usersService.findOne('email', email);
-    if (
-      user &&
-      this.passwordService.comparePassword(inputPassword, user.password)
-    ) {
+    const isPasswordMatch = await this.passwordService.comparePassword(
+      inputPassword,
+      user.password,
+    );
+    console.log(isPasswordMatch);
+    if (user && isPasswordMatch) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
